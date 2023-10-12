@@ -1,80 +1,49 @@
-# Crear una lista de tuplas para el inventario de productos
-inventario_lista = []
+# Crear una lista de contactos que contiene diccionarios con la información de cada contacto
+contactos = []
 
-# Crear un diccionario para el inventario de productos
-inventario_diccionario = {}
+# Función para agregar un contacto a la lista
+def agregar_contacto(nombre, telefono, correo):
+    contacto = {"Nombre": nombre, "Teléfono": telefono, "Correo": correo}
+    contactos.append(contacto)
+    print(f"Contacto '{nombre}' ha sido agregado a la lista.")
 
-# Función para agregar un producto
-def agregar_producto(nombre, precio, cantidad):
-    if nombre in inventario_diccionario:
-        print(f"{nombre} ya existe en el inventario.")
-    else:
-        producto = (nombre, precio, cantidad)
-        inventario_lista.append(producto)
-        inventario_diccionario[nombre] = {"precio": precio, "cantidad": cantidad}
-        print(f"{nombre} ha sido agregado al inventario.")
+# Función para buscar un contacto por nombre
+def buscar_contacto(nombre):
+    for contacto in contactos:
+        if contacto["Nombre"] == nombre:
+            print(f"Nombre: {contacto['Nombre']}")
+            print(f"Teléfono: {contacto['Teléfono']}")
+            print(f"Correo: {contacto['Correo']}")
+            return
+    print(f"Contacto '{nombre}' no se encuentra en la lista.")
 
-# Función para eliminar un producto
-def eliminar_producto(nombre):
-    if nombre in inventario_diccionario:
-        inventario_lista[:] = [producto for producto in inventario_lista if producto[0] != nombre]
-        del inventario_diccionario[nombre]
-        print(f"{nombre} ha sido eliminado del inventario.")
-    else:
-        print(f"{nombre} no existe en el inventario.")
-
-# Función para realizar una venta
-def realizar_venta(nombre, cantidad):
-    producto = inventario_diccionario.get(nombre)
-    if producto:
-        if producto["cantidad"] >= cantidad:
-            precio_total = cantidad * producto["precio"]
-            producto["cantidad"] -= cantidad
-            for i, (nombre, precio, cantidad_disponible) in enumerate(inventario_lista):
-                if nombre == producto:
-                    nueva_cantidad = cantidad_disponible - cantidad
-                    inventario_lista[i] = (nombre, precio, nueva_cantidad)
-            return precio_total
-        else:
-            print(f"No hay suficientes {nombre} en stock.")
-    else:
-        print(f"{nombre} no existe en el inventario.")
-    return 0
-
-# Función para mostrar el inventario
-def mostrar_inventario():
-    print("Inventario:")
-    for nombre, producto in inventario_diccionario.items():
-        print(f"{nombre}: Precio Unitario=${producto['precio']}, Cantidad Disponible={producto['cantidad']}")
+# Función para mostrar la lista de contactos
+def mostrar_contactos():
+    print("Lista de contactos:")
+    for i, contacto in enumerate(contactos, 1):
+        print(f"{i}. {contacto['Nombre']} - {contacto['Teléfono']} - {contacto['Correo']}")
 
 # Menú para que el usuario interactúe
 while True:
     print("\nSeleccione una opción:")
-    print("1. Agregar un producto")
-    print("2. Eliminar un producto")
-    print("3. Realizar una venta")
-    print("4. Mostrar inventario")
-    print("5. Salir")
+    print("1. Agregar un contacto")
+    print("2. Buscar un contacto")
+    print("3. Mostrar la lista de contactos")
+    print("4. Salir")
 
     opcion = input("Opción: ")
 
     if opcion == "1":
-        nombre = input("Nombre del producto: ")
-        precio = float(input("Precio unitario: "))
-        cantidad = int(input("Cantidad disponible: "))
-        agregar_producto(nombre, precio, cantidad)
+        nombre = input("Nombre del contacto: ")
+        telefono = input("Teléfono: ")
+        correo = input("Correo: ")
+        agregar_contacto(nombre, telefono, correo)
     elif opcion == "2":
-        nombre = input("Nombre del producto a eliminar: ")
-        eliminar_producto(nombre)
+        nombre = input("Ingrese el nombre del contacto a buscar: ")
+        buscar_contacto(nombre)
     elif opcion == "3":
-        nombre = input("Nombre del producto a vender: ")
-        cantidad = int(input("Cantidad a vender: "))
-        total_venta = realizar_venta(nombre, cantidad)
-        if total_venta:
-            print(f"Venta de {nombre}: ${total_venta}")
+        mostrar_contactos()
     elif opcion == "4":
-        mostrar_inventario()
-    elif opcion == "5":
         break
     else:
         print("Opción inválida. Por favor, seleccione una opción válida.")
